@@ -1,16 +1,11 @@
 package com.educative.ecommerce.service;
-
-import com.educative.ecommerce.common.ApiResponse;
-import com.educative.ecommerce.dto.ProductDto;
 import com.educative.ecommerce.model.Category;
+import com.educative.ecommerce.model.Product;
 import com.educative.ecommerce.repository.Categoryrepository;
+import com.educative.ecommerce.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,27 +14,27 @@ public class CategoryService {
 
     @Autowired
     private Categoryrepository categoryrepository;
-
-    public List<Category> listCategories() {
-
+    private ProductRepository productRepository;
+    public List<Category> listCategories()
+    {
         return categoryrepository.findAll();
     }
-
-    public void createCategory(Category category) {
+    public void createCategory(Category category)
+    {
 
         categoryrepository.save(category);
     }
-
-   public Category readCategory(String categoryName) {
+   public Category readCategory(String categoryName)
+   {
         return categoryrepository.findByCategoryName(categoryName);
     }
-
-    public Optional<Category> readCategory(Integer categoryId) {
+    public Optional<Category> readCategory(Integer categoryId)
+    {
 
         return categoryrepository.findById(categoryId);
     }
-
-    public void updateCategory(Integer categoryID, Category newCategory) {
+    public void updateCategory(Integer categoryID, Category newCategory)
+    {
         Category category = categoryrepository.findById(categoryID).get();
         category.setCategoryName(newCategory.getCategoryName());
         category.setDescription(newCategory.getDescription());
@@ -47,4 +42,28 @@ public class CategoryService {
         categoryrepository.save(category);
     }
 
+    public Category  getCategoriesInfo(Integer Id)
+    {
+        Category categoryResponse = new Category();
+        Category category = categoryrepository.findById(Id).get();
+        categoryResponse.setId(category.getId());
+        categoryResponse.setCategoryName(category.getCategoryName());
+        categoryResponse.setDescription(category.getDescription());
+        categoryResponse.setImageUrl(category.getImageUrl());
+        List<Product> product = category.getProduct();
+        List<Product> productResponses = new ArrayList<>();
+        for (int i = 0; i < product.size(); i++)
+        {
+            Product productResponse = product.get(i);
+            productResponse.getId();
+            productResponse.getDescription();
+            productResponse.getName();
+            productResponse.getPrice();
+            productResponse.getImageURL();
+            productResponse.getCategory();
+            productResponses.add(productResponse);
+        }
+        categoryResponse.setProduct(productResponses);
+        return categoryResponse;
+    }
 }

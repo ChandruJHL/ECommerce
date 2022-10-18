@@ -7,12 +7,7 @@ import com.educative.ecommerce.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -26,11 +21,26 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping("/")
+    @GetMapping("/category/all")
     public ResponseEntity<List<Category>> getCategories() {
         List<Category> body = categoryService.listCategories();
         return new ResponseEntity<>(body, HttpStatus.OK);
     }
+
+  /* @GetMapping("/categoryId")
+    public ResponseEntity<Category> getCategoriesDetails(@PathVariable("categoryID") Integer categoryID) {
+        Category CategoryInfo = categoryService.getCategoriesInfo(categoryID);
+        return new ResponseEntity<>(CategoryInfo, HttpStatus.OK);
+    }
+    */
+  @GetMapping(path = "/categoryId",produces = "application/json")
+  public Category getCategoriesDetails(@RequestParam Integer categoryID)
+  {
+     //Category CategoryInfo = categoryService.getCategoriesInfo(categoryID);
+      return categoryService.getCategoriesInfo(categoryID);
+
+  }
+
 
     @PostMapping("/create")
     public ResponseEntity<ApiResponse> createCategory(@Valid @RequestBody Category category) {
@@ -42,7 +52,7 @@ public class CategoryController {
     }
 
 
-    @PostMapping("/update/{categoryID}")
+    @PutMapping("/update/{categoryID}")
     public ResponseEntity<ApiResponse> updateCategory(@PathVariable("categoryID") Integer categoryID, @Valid @RequestBody Category category) {
         // Check to see if the category exists.
         if (Objects.nonNull(categoryService.readCategory(categoryID))) {
@@ -50,7 +60,6 @@ public class CategoryController {
             categoryService.updateCategory(categoryID, category);
             return new ResponseEntity<ApiResponse>(new ApiResponse(true, "updated the category"), HttpStatus.OK);
         }
-
         // If the category doesn't exist then return a response of unsuccessful.
         return new ResponseEntity<>(new ApiResponse(false, "category does not exist"), HttpStatus.NOT_FOUND);
     }
