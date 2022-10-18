@@ -25,6 +25,8 @@ public class Product {
     private @NotNull double price;
     private @NotNull String description;
 
+    //private @NotNull int categoryId;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id", nullable = false)
@@ -50,7 +52,15 @@ public class Product {
     public void setId(Integer id) {
         this.id = id;
     }
+/*
+    public int getCategoryId() {
+        return categoryId;
+    }
 
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+*/
     public String getName() {
         return name;
     }

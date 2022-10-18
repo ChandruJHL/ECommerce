@@ -1,4 +1,6 @@
 package com.educative.ecommerce.service;
+import com.educative.ecommerce.dto.CategoryDto;
+import com.educative.ecommerce.dto.ProductDto;
 import com.educative.ecommerce.model.Category;
 import com.educative.ecommerce.model.Product;
 import com.educative.ecommerce.repository.Categoryrepository;
@@ -42,25 +44,26 @@ public class CategoryService {
         categoryrepository.save(category);
     }
 
-    public Category  getCategoriesInfo(Integer Id)
+    public CategoryDto getCategoriesInfo(Integer Id)
     {
-        Category categoryResponse = new Category();
+        CategoryDto categoryResponse = new CategoryDto();
         Category category = categoryrepository.findById(Id).get();
         categoryResponse.setId(category.getId());
         categoryResponse.setCategoryName(category.getCategoryName());
         categoryResponse.setDescription(category.getDescription());
         categoryResponse.setImageUrl(category.getImageUrl());
         List<Product> product = category.getProduct();
-        List<Product> productResponses = new ArrayList<>();
+        List<ProductDto> productResponses = new ArrayList<>();
         for (int i = 0; i < product.size(); i++)
         {
-            Product productResponse = product.get(i);
-            productResponse.getId();
-            productResponse.getDescription();
-            productResponse.getName();
-            productResponse.getPrice();
-            productResponse.getImageURL();
-            productResponse.getCategory();
+            Product productEntity = product.get(i);
+            ProductDto productResponse = new ProductDto();
+            productResponse.setId(productEntity.getId());
+            productResponse.setDescription(productEntity.getDescription());
+            productResponse.setName(productEntity.getName());
+            productResponse.setPrice(productEntity.getPrice());
+            productResponse.setImageURL(productEntity.getImageURL());
+     //      productResponse.setCategoryId(productEntity.getCategoryId());
             productResponses.add(productResponse);
         }
         categoryResponse.setProduct(productResponses);

@@ -2,6 +2,7 @@ package com.educative.ecommerce.controller;
 
 
 import com.educative.ecommerce.common.ApiResponse;
+import com.educative.ecommerce.dto.CategoryDto;
 import com.educative.ecommerce.model.Category;
 import com.educative.ecommerce.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class CategoryController {
     }
     */
   @GetMapping(path = "/categoryId",produces = "application/json")
-  public Category getCategoriesDetails(@RequestParam Integer categoryID)
+  public CategoryDto getCategoriesDetails(@RequestParam Integer categoryID)
   {
      //Category CategoryInfo = categoryService.getCategoriesInfo(categoryID);
       return categoryService.getCategoriesInfo(categoryID);
