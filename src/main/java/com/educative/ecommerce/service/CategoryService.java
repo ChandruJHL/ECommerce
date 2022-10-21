@@ -28,7 +28,8 @@ public class CategoryService {
     }
    public Category readCategory(String categoryName)
    {
-        return categoryrepository.findByCategoryName(categoryName);
+
+       return categoryrepository.findByCategoryName(categoryName);
     }
     public Optional<Category> readCategory(Integer categoryId)
     {
