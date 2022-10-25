@@ -1,6 +1,7 @@
 package com.educative.ecommerce.controller;
 
 import com.educative.ecommerce.common.ApiResponse;
+import com.educative.ecommerce.dto.UserDto;
 import com.educative.ecommerce.model.User;
 import com.educative.ecommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +33,17 @@ public class UserController {
         return new ResponseEntity<>(new ApiResponse(true, "created the user"), HttpStatus.CREATED);
     }
     @PostMapping("/loginUser")
-    public ResponseEntity<ApiResponse> loginUser(@Valid @RequestBody User user){
+    public ResponseEntity<ApiResponse> loginUser(@Valid @RequestBody UserDto user){
         String email = user.getEmail();
         String password = user.getPassword();
         String responseMessage = userService.ValidateUser(email,password);
-        return new ResponseEntity<ApiResponse>(new ApiResponse(false, responseMessage),HttpStatus.CONFLICT);
+        if(responseMessage != "")
+        {
+            return new ResponseEntity<>(new ApiResponse(true, responseMessage), HttpStatus.CREATED);
+        }
+        else
+        {
+            return new ResponseEntity<ApiResponse>(new ApiResponse(false, responseMessage), HttpStatus.CONFLICT);
+        }
     }
 }
